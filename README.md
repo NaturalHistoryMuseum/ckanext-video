@@ -1,4 +1,15 @@
-# ckanext-video
-CKAN extension for embedded video players
+ckanext-graph
+=============
 
-CKAN view for adding an embedded player for Youtube or Vimeo videos.
+CKAN extension for graph views, with data processing moved to the backend.
+
+At the moment it just has one type of graph - temporal.  Select a date created field, and a graph will show how the dataset has increaed over time.
+
+More graphs are planner for the future.
+
+Configuration
+-------------
+
+ckanext.gallery.field_separator
+
+Defaults to ;
