@@ -9,7 +9,7 @@ import ckan.plugins as p
 import ckan.tests as tests
 
 
-class TestImageView(tests.WsgiAppCase):
+class TestVideoView(tests.WsgiAppCase):
 
     @classmethod
     def setup_class(cls):
