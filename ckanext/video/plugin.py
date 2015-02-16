@@ -11,7 +11,7 @@ is_positive_integer = p.toolkit.get_validator('is_positive_integer')
 
 
 
-class VideoPlugin(p.SingletonPlugin):
+class VideoViewPlugin(p.SingletonPlugin):
     '''
     Resource view for embedding videos (youtube/vimeo)
     '''
