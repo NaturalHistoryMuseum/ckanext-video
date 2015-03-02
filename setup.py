@@ -21,6 +21,6 @@ setup(
 	entry_points=\
 	"""
         [ckan.plugins]
-            video_view = ckanext.video.plugin:VideoViewPlugin
+            video = ckanext.video.plugin:VideoPlugin
 	""",
 )

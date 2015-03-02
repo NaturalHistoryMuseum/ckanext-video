@@ -11,7 +11,7 @@ is_positive_integer = p.toolkit.get_validator('is_positive_integer')
 
 
 
-class VideoViewPlugin(p.SingletonPlugin):
+class VideoPlugin(p.SingletonPlugin):
     '''
     Resource view for embedding videos (youtube/vimeo)
     '''
@@ -27,7 +27,7 @@ class VideoViewPlugin(p.SingletonPlugin):
         return {'name': 'video',
                 'title': 'Embedded video',
                 'schema': {
-                    'video_url': [ignore_empty, unicode, is_valid_video_url],
+                    'video_cdurl': [ignore_empty, unicode, is_valid_video_url],
                     'width': [not_empty, is_positive_integer],
                     'height': [not_empty, is_positive_integer],
                 },
