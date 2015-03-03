@@ -27,7 +27,7 @@ class VideoPlugin(p.SingletonPlugin):
         return {'name': 'video',
                 'title': 'Embedded video',
                 'schema': {
-                    'video_cdurl': [ignore_empty, unicode, is_valid_video_url],
+                    'video_url': [ignore_empty, unicode, is_valid_video_url],
                     'width': [not_empty, is_positive_integer],
                     'height': [not_empty, is_positive_integer],
                 },
