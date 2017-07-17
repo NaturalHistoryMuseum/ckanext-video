@@ -4,11 +4,11 @@
 Created by 'bens3' on 2013-06-21.
 Copyright (c) 2013 'bens3'. All rights reserved.
 """
-
+import re
 from ckan.common import _
 import ckan.lib.navl.dictization_functions as df
-import re
-from ckanext.video import video_provider_patterns
+
+from ckanext.video.providers import video_provider_patterns
 
 Invalid = df.Invalid
 Missing = df.Missing

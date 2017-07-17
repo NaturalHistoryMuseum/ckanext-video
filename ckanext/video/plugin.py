@@ -2,7 +2,7 @@ import logging
 import ckan.plugins as p
 import re
 from ckanext.video.logic.validators import is_valid_video_url
-from ckanext.video import video_provider_patterns
+from ckanext.video.providers import video_provider_patterns
 
 log = logging.getLogger(__name__)
 ignore_empty = p.toolkit.get_validator('ignore_empty')
@@ -10,11 +10,10 @@ not_empty = p.toolkit.get_validator('not_empty')
 is_positive_integer = p.toolkit.get_validator('is_positive_integer')
 
 
-
 class VideoPlugin(p.SingletonPlugin):
-    '''
+    """
     Resource view for embedding videos (youtube/vimeo)
-    '''
+    """
 
     p.implements(p.IConfigurer, inherit=True)
     p.implements(p.IResourceView, inherit=True)
