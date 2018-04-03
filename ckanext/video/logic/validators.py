@@ -5,17 +5,12 @@
 # Created by the Natural History Museum in London, UK
 
 import re
-from ckan.common import _
-import ckan.lib.navl.dictization_functions as df
-
 from ckanext.video.providers import video_provider_patterns
 
-Invalid = df.Invalid
-Missing = df.Missing
+from ckan.plugins import toolkit
 
 
 def is_valid_video_url(value, context):
-
     '''Validate a URL is a valid video URL
 
     :param value: 
@@ -26,4 +21,4 @@ def is_valid_video_url(value, context):
         if re.search(pattern, value, re.IGNORECASE):
             return value
 
-    raise Invalid(_(u'URL is not a valid video provider'))
+    raise toolkit.Invalid(toolkit._(u'URL is not a valid video provider'))
