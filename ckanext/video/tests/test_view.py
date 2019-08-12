@@ -4,41 +4,24 @@
 # This file is part of ckanext-video
 # Created by the Natural History Museum in London, UK
 
-import paste.fixture
+import ckantest.helpers
+from ckantest.models import TestBase
 
-import ckan.tests as tests
-from ckan import model, plugins
-from ckan.lib import create_test_data
 from ckan.plugins import toolkit
 
 
-class TestVideoView(tests.WsgiAppCase):
-    ''' '''
+class TestVideoView(TestBase):
+    plugins = [u'video', u'datastore', u'resource_proxy']
 
     @classmethod
     def setup_class(cls):
-        ''' '''
-
         cls.config_templates = toolkit.config[u'ckan.legacy_templates']
         toolkit.config[u'ckan.legacy_templates'] = u'false'
-        wsgiapp = toolkit.middleware.make_app(toolkit.config[u'global_conf'],
-                                              **toolkit.config)
-        cls.app = paste.fixture.TestApp(wsgiapp)
-
-        plugins.load(u'video_view')
-
-        create_test_data.CreateTestData.create()
-
-        context = {
-            u'model': model,
-            u'session': model.Session,
-            u'user': model.User.get(u'testsysadmin').name
-            }
-        #
-        cls.package = model.Package.get(u'annakarenina')
-        cls.resource_id = cls.package.resources[1].id
+        super(TestVideoView, cls).setup_class()
+        cls._package = cls.data_factory().public_records
+        cls._resource = cls._package[u'resources'][0]
         cls.resource_view = {
-            u'resource_id': cls.resource_id,
+            u'resource_id': cls._resource[u'id'],
             u'view_type': u'video',
             u'title': u'Test View',
             u'description': u'A nice test view',
@@ -46,35 +29,34 @@ class TestVideoView(tests.WsgiAppCase):
             u'width': 400,
             u'video_url': u'https://www.youtube.com/embed/-voP-V7YcqA'
             }
-        cls.resource_view = toolkit.get_action(u'resource_view_create')(context,
+        cls.resource_view = toolkit.get_action(u'resource_view_create')(cls.data_factory().context,
                                                                         cls.resource_view)
 
     @classmethod
     def teardown_class(cls):
-        ''' '''
+        super(TestVideoView, cls).teardown_class()
         toolkit.config[u'ckan.legacy_templates'] = cls.config_templates
-        model.repo.rebuild_db()
 
     def test_video_is_shown(self):
         ''' '''
-        url = toolkit.url_for(controller=u'package', action=u'resource_read',
-                              id=self.package.name, resource_id=self.resource_id)
+        url = ckantest.helpers.routes.resource_read(self._package,
+                                                    self._resource)
         result = self.app.get(url)
         assert self.resource_view[u'video_url'] in result
 
     def test_title_description_iframe_shown(self):
         ''' '''
-        url = toolkit.url_for(controller=u'package', action=u'resource_read',
-                              id=self.package.name, resource_id=self.resource_id)
+        url = ckantest.helpers.routes.resource_read(self._package,
+                                                    self._resource)
         result = self.app.get(url)
         assert self.resource_view[u'title'] in result
         assert self.resource_view[u'description'] in result
-        assert u'iframe' in result.body
+        assert u'iframe' in result.unicode_body
 
     def test_iframe_attributes(self):
         ''' '''
-        url = toolkit.url_for(controller=u'package', action=u'resource_read',
-                              id=self.package.name, resource_id=self.resource_id)
+        url = ckantest.helpers.routes.resource_read(self._package,
+                                                    self._resource)
         result = self.app.get(url)
         assert u'width="%s"' % self.resource_view[u'width'] in result
         assert u'height="%s"' % self.resource_view[u'height'] in result
