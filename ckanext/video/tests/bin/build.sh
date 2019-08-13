@@ -24,7 +24,11 @@ python setup.py develop
 sudo -u postgres psql -c "CREATE USER ckan_default WITH PASSWORD 'pass';"
 sudo -u postgres psql -c 'CREATE DATABASE ckan_test WITH OWNER ckan_default;'
 
+sudo -u postgres psql -c "CREATE USER datastore_default WITH PASSWORD 'pass';"
+sudo -u postgres psql -c 'CREATE DATABASE datastore_test WITH OWNER ckan_default;'
+
 paster db init -c /ckan/test-core.ini
+paster datastore set-permissions -c test-core.ini | sudo -u postgres psql
 
 cd $HERE
 pip install -r requirements.txt
