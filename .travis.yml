@@ -14,6 +14,6 @@ services:
 addons:
   postgresql: "9.4"
 
-script: coverage run --source=ckanext.video setup.py nosetests --ckan --with-pylons=ckanext/video/tests/bin/test.ini --nologcapture
+script: coverage run --source=ckanext.video setup.py nosetests --ckan --with-pylons=ckanext/video/tests/bin/test.ini --nologcapture --debug=ckantest,ckanext.video
 
 after_success: coveralls
