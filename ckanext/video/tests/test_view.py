@@ -19,7 +19,7 @@ class TestVideoView(TestBase):
         toolkit.config[u'ckan.legacy_templates'] = u'false'
         super(TestVideoView, cls).setup_class()
         cls._package = cls.data_factory().package()
-        cls._resource = cls.data_factory().resource(cls._package[u'id'])[u'resources'][0]
+        cls._resource = cls.data_factory().resource(cls._package[u'id'])
         cls.resource_view = {
             u'resource_id': cls._resource[u'id'],
             u'view_type': u'video',
