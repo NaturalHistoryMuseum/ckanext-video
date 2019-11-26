@@ -1,0 +1,19 @@
+dist: trusty
+language: python
+
+python:
+  - "2.7"
+
+install:
+  - sh ckanext/video/tests/bin/build.sh
+
+services:
+  - redis-server
+  - postgresql
+
+addons:
+  postgresql: "9.4"
+
+script: coverage run --source=ckanext.video setup.py nosetests --ckan --with-pylons=ckanext/video/tests/bin/test.ini --nologcapture --debug=ckantest,ckanext.video --rednose
+
+after_success: coveralls
