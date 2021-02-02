@@ -13,4 +13,5 @@
 ehthumbs.db
 Thumbs.db
 
-\.coverage
+.coverage
+.idea
