@@ -21,4 +21,4 @@ def is_valid_video_url(value, context):
         if re.search(pattern, value, re.IGNORECASE):
             return value
 
-    raise toolkit.Invalid(toolkit._(u'URL is not a valid video provider'))
+    raise toolkit.Invalid(toolkit._('URL is not a valid video provider'))
