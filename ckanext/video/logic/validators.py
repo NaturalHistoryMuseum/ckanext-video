@@ -5,20 +5,20 @@
 # Created by the Natural History Museum in London, UK
 
 import re
-from ckanext.video.providers import video_provider_patterns
 
 from ckan.plugins import toolkit
+from ckanext.video.providers import video_provider_patterns
 
 
 def is_valid_video_url(value, context):
     '''Validate a URL is a valid video URL
 
-    :param value: 
-    :param context: 
+    :param value:
+    :param context:
 
     '''
     for pattern in video_provider_patterns.values():
         if re.search(pattern, value, re.IGNORECASE):
             return value
 
-    raise toolkit.Invalid(toolkit._(u'URL is not a valid video provider'))
+    raise toolkit.Invalid(toolkit._('URL is not a valid video provider'))
