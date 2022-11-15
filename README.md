@@ -2,10 +2,11 @@
 
 # ckanext-video
 
-[![Travis](https://img.shields.io/travis/NaturalHistoryMuseum/ckanext-video/master.svg?style=flat-square)](https://travis-ci.org/NaturalHistoryMuseum/ckanext-video)
-[![Coveralls](https://img.shields.io/coveralls/github/NaturalHistoryMuseum/ckanext-video/master.svg?style=flat-square)](https://coveralls.io/github/NaturalHistoryMuseum/ckanext-video)
+[![Tests](https://img.shields.io/github/workflow/status/NaturalHistoryMuseum/ckanext-video/Tests?style=flat-square)](https://github.com/NaturalHistoryMuseum/ckanext-video/actions/workflows/main.yml)
+[![Coveralls](https://img.shields.io/coveralls/github/NaturalHistoryMuseum/ckanext-video/main?style=flat-square)](https://coveralls.io/github/NaturalHistoryMuseum/ckanext-video)
 [![CKAN](https://img.shields.io/badge/ckan-2.9.1-orange.svg?style=flat-square)](https://github.com/ckan/ckan)
 [![Python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8-blue.svg?style=flat-square)](https://www.python.org/)
+[![Docs](https://img.shields.io/readthedocs/ckanext-video?style=flat-square)](https://ckanext-video.readthedocs.io)
 
 _A CKAN extension for embedding Youtube or Vimeo videos as views._
 
@@ -65,10 +66,8 @@ After enabling this extension in the list of plugins, the Embedded Video view sh
 
 
 # Testing
-_Test coverage is currently extremely limited._
 
-To run the tests in this extension, there is a Docker compose configuration available in this
-repository to make it easy.
+There is a Docker compose configuration available in this repository to make it easier to run tests.
 
 To run the tests against ckan 2.9.x on Python3:
 
@@ -85,4 +84,4 @@ docker-compose build
 docker-compose run ckan
 ```
 
-The ckan image uses the Dockerfile in the `docker/` folder which is based on `openknowledge/ckan-dev:2.9`.
+The ckan image uses the Dockerfile in the `docker/` folder.
