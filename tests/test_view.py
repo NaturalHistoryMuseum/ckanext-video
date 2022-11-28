@@ -29,7 +29,9 @@ def rendered_view(app):
         'video_url': VIDEO_URL,
     }
     call_action('resource_view_create', **data_dict)
-    url = toolkit.url_for('resource.read', id=package['name'], resource_id=resource['id'])
+    url = toolkit.url_for(
+        'resource.read', id=package['name'], resource_id=resource['id']
+    )
     return app.get(url)
 
 
@@ -37,7 +39,6 @@ def rendered_view(app):
 @pytest.mark.ckan_config('ckan.plugins', 'video')
 @pytest.mark.usefixtures('clean_db', 'with_plugins', 'with_request_context')
 class TestVideoView(object):
-
     def test_video_is_shown(self, rendered_view):
         assert VIDEO_URL in rendered_view
 
