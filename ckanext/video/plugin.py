@@ -8,7 +8,7 @@ import logging
 import re
 
 from ckan.plugins import SingletonPlugin, implements, interfaces, toolkit
-from ckanext.video.logic.validators import is_valid_video_url
+from ckanext.video.logic.validators import is_valid_video_url, is_valid_video_url_with_context
 from ckanext.video.providers import video_provider_patterns
 
 log = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class VideoPlugin(SingletonPlugin):
             'name': 'video',
             'title': 'Embedded video',
             'schema': {
-                'video_url': [ignore_empty, str, is_valid_video_url],
+                'video_url': [ignore_empty, str, is_valid_video_url_with_context],
                 'width': [not_empty, is_positive_integer],
                 'height': [not_empty, is_positive_integer],
             },
@@ -43,13 +43,15 @@ class VideoPlugin(SingletonPlugin):
         }
 
     def can_view(self, data_dict):
-        return True
+        video_url = data_dict['resource'].get('url')
+        return is_valid_video_url(video_url)
 
+    # NOTE: video_view.html or such generic file name may conflit with other plugins such as ckanext_videoviewer
     def view_template(self, context, data_dict):
-        return 'video_view.html'
+        return 'nhm_video_view.html'
 
     def form_template(self, context, data_dict):
-        return 'video_form.html'
+        return 'nhm_video_form.html'
 
     def setup_template_variables(self, context, data_dict):
         """
