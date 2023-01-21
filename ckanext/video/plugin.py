@@ -22,9 +22,8 @@ class VideoPlugin(SingletonPlugin):
     Resource view for embedding videos (youtube/vimeo)
     """
 
-    implements(interfaces.IConfigurer, inherit=True)
-    implements(interfaces.IResourceView, inherit=True)
-    implements(interfaces.IPackageController, inherit=True)
+    implements(interfaces.IConfigurer)
+    implements(interfaces.IResourceView)
 
     def update_config(self, config):
         toolkit.add_template_directory(config, 'theme/templates')
@@ -32,7 +31,8 @@ class VideoPlugin(SingletonPlugin):
     def info(self):
         return {
             'name': 'video',
-            'title': 'Embedded video',
+            'title': toolkit._('Embedded Video'),
+            'default_title': toolkit._('Video Preview'),
             'schema': {
                 'video_url': [ignore_empty, str, is_valid_video_url_with_context],
                 'width': [not_empty, is_positive_integer],
@@ -46,13 +46,12 @@ class VideoPlugin(SingletonPlugin):
         video_url = data_dict['resource'].get('url')
         return is_valid_video_url(video_url)
 
-    # NOTE: video_view.html or such generic file name may conflit with other plugins such as ckanext_videoviewer
     def view_template(self, context, data_dict):
-        return 'nhm_video_view.html'
+        return 'embedded_video/video_view.html'
 
     def form_template(self, context, data_dict):
-        return 'nhm_video_form.html'
-
+        return 'embedded_video/video_form.html'
+    
     def setup_template_variables(self, context, data_dict):
         """
         Setup variables available to templates.
@@ -65,14 +64,15 @@ class VideoPlugin(SingletonPlugin):
         ].get('url')
 
         # Is this a youtube video?
-        if 'youtube.com' in video_url:
-            # If this is a youtube link, replace with a URL for embeddable video
+        for key in video_provider_patterns:
+            if not key.startswith('youtube'):
+                continue
             match = re.search(
-                video_provider_patterns['youtube_link'], video_url, re.IGNORECASE
+                video_provider_patterns[key], video_url, re.IGNORECASE
             )
             if match:
                 video_url = f'https://www.youtube.com/embed/{match.group(1)}'
+                break
 
         # TODO - More video provider types
-
         return {'defaults': {'width': 480, 'height': 390}, 'video_url': video_url}
