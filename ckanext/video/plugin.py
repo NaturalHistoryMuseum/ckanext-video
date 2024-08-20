@@ -8,7 +8,7 @@ import logging
 import re
 
 from ckan.plugins import SingletonPlugin, implements, interfaces, toolkit
-from ckanext.video.logic.validators import is_valid_video_url
+from ckanext.video.logic.validators import is_valid_video_url, is_valid_video_url_with_context
 from ckanext.video.providers import video_provider_patterns
 
 log = logging.getLogger(__name__)
@@ -22,9 +22,8 @@ class VideoPlugin(SingletonPlugin):
     Resource view for embedding videos (youtube/vimeo)
     """
 
-    implements(interfaces.IConfigurer, inherit=True)
-    implements(interfaces.IResourceView, inherit=True)
-    implements(interfaces.IPackageController, inherit=True)
+    implements(interfaces.IConfigurer)
+    implements(interfaces.IResourceView)
 
     def update_config(self, config):
         toolkit.add_template_directory(config, 'theme/templates')
@@ -32,9 +31,10 @@ class VideoPlugin(SingletonPlugin):
     def info(self):
         return {
             'name': 'video',
-            'title': 'Embedded video',
+            'title': toolkit._('Embedded Video'),
+            'default_title': toolkit._('Video Preview'),
             'schema': {
-                'video_url': [ignore_empty, str, is_valid_video_url],
+                'video_url': [ignore_empty, str, is_valid_video_url_with_context],
                 'width': [not_empty, is_positive_integer],
                 'height': [not_empty, is_positive_integer],
             },
@@ -43,14 +43,15 @@ class VideoPlugin(SingletonPlugin):
         }
 
     def can_view(self, data_dict):
-        return True
+        video_url = data_dict['resource'].get('url')
+        return is_valid_video_url(video_url)
 
     def view_template(self, context, data_dict):
-        return 'video_view.html'
+        return 'embedded_video/video_view.html'
 
     def form_template(self, context, data_dict):
-        return 'video_form.html'
-
+        return 'embedded_video/video_form.html'
+    
     def setup_template_variables(self, context, data_dict):
         """
         Setup variables available to templates.
@@ -63,14 +64,15 @@ class VideoPlugin(SingletonPlugin):
         ].get('url')
 
         # Is this a youtube video?
-        if 'youtube.com' in video_url:
-            # If this is a youtube link, replace with a URL for embeddable video
+        for key in video_provider_patterns:
+            if not key.startswith('youtube'):
+                continue
             match = re.search(
-                video_provider_patterns['youtube_link'], video_url, re.IGNORECASE
+                video_provider_patterns[key], video_url, re.IGNORECASE
             )
             if match:
                 video_url = f'https://www.youtube.com/embed/{match.group(1)}'
+                break
 
         # TODO - More video provider types
-
         return {'defaults': {'width': 480, 'height': 390}, 'video_url': video_url}
