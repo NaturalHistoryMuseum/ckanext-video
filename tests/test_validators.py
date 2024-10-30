@@ -1,7 +1,8 @@
 import pytest
 from ckan.plugins import toolkit
-from ckanext.video.logic.validators import is_valid_video_url
 from mock import MagicMock
+
+from ckanext.video.logic.validators import is_valid_video_url
 
 
 class TestValidVideoURL(object):

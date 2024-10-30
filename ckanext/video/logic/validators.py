@@ -7,6 +7,7 @@
 import re
 
 from ckan.plugins import toolkit
+
 from ckanext.video.providers import video_provider_patterns
 
 
