@@ -8,6 +8,7 @@ import logging
 import re
 
 from ckan.plugins import SingletonPlugin, implements, interfaces, toolkit
+
 from ckanext.video.logic.validators import is_valid_video_url
 from ckanext.video.providers import video_provider_patterns
 
